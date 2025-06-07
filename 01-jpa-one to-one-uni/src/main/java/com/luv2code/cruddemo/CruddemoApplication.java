@@ -16,16 +16,26 @@ public class CruddemoApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(AppDAO theAppDAO) {
+    public CommandLineRunner commandLineRunner(AppDAO appDAO) {
         return runner -> {
-            createInstructor(theAppDAO);
+            //createInstructor(appDAO);
+            findInstructor(appDAO);
         };
     }
 
-    private void createInstructor(AppDAO theAppDAO) {
+    private void findInstructor(AppDAO appDAO) {
+        int theId = 2;
+        System.out.println("Finding instructor id: " + theId);
 
-        // create the instructor
+        Instructor tempInstructor = appDAO.findInstructorById(theId);
 
+        System.out.println("tempInstructor: " + tempInstructor);
+        System.out.println("the associated instructorDetail only: " + tempInstructor.getInstructorDetail());
+    }
+
+    private void createInstructor(AppDAO appDAO) {
+
+        /*// create the instructor
         Instructor tempInstructor =
                 new Instructor("Chad", "Darby", "darby@luv2code");
 
@@ -33,7 +43,17 @@ public class CruddemoApplication {
         InstructorDetail tempInstructorDetail =
                 new InstructorDetail(
                         "http://www.luv2code.com/youtube",
-                        "Luv 2 code!!!");
+                        "Luv 2 code!!!");*/
+
+        // create the instructor
+        Instructor tempInstructor =
+                new Instructor("Madhu", "Patel", "madhu@luv2code.com");
+
+        // create the instructor detail
+        InstructorDetail tempInstructorDetail =
+                new InstructorDetail(
+                        "http://www.luv2code.com/youtube",
+                        "Guitar");
 
         // associate the objects
         tempInstructor.setInstructorDetail(tempInstructorDetail);
@@ -44,7 +64,7 @@ public class CruddemoApplication {
         // because of CascadeType.ALL
         //
         System.out.println("Saving instructor: " + tempInstructor);
-        theAppDAO.save(tempInstructor);
+        appDAO.save(tempInstructor);
 
         System.out.println("Done!");
     }
